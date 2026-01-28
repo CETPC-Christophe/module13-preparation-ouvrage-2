@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TOPOGRAPHIE - MODULE 13 • Ouvrage 2</title>
+<style>
+:root { --orange:#ff6600; --noir:#222; --gris:#f7f7f8; --ok:#2e7d32; --ko:#c62828; }
+*{box-sizing:border-box}
+body { font-family: "Segoe UI", Tahoma, sans-serif; background: var(--gris); color: var(--noir); margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:16px; }
+.banner { background:var(--noir); color:#fff; padding:10px; border-radius:10px; text-align:center; font-weight:700; width:100%; max-width:920px; margin-bottom:15px; }
+h1 { color:var(--orange); text-align:center; margin:8px 0; }
+.subtitle { color:#555; text-align:center; margin-bottom:18px; }
+.section { background:#fff; padding:18px; border-radius:12px; box-shadow:0 3px 6px rgba(0,0,0,.07); width:100%; max-width:920px; margin:10px 0; }
+.controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+input[type="text"], input[type="number"] { padding:10px 12px; border:1px solid #ccc; border-radius:8px; font-size:15px; }
+input[type="number"]{ width:140px; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top:10px; }
+.figure{ background:#fafafa; border:1px solid #e6e6e6; border-radius:10px; padding:8px; text-align:center; }
+.figure img{ max-width:100%; height:auto; border-radius:6px; }
+.figure .legend{ font-size:13px; color:#666; margin-top:6px; }
+.qblock{ margin-top:8px; padding:10px 12px; border-left:6px solid var(--orange); border-radius:8px; background:#fff; }
+.qtitle{ font-weight:700; margin-bottom:8px; }
+.row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:6px 0; }
+.small{ font-size:12px; color:#666; }
+button { background:var(--orange); color:#fff; border:none; padding:10px 16px; border-radius:8px; font-size:15px; cursor:pointer; }
+button[disabled]{ opacity:.6; cursor:not-allowed; }
+button:hover:not([disabled]){ filter:brightness(.97); }
+hr{ border:none; border-top:1px solid #eee; margin:14px 0; }
+.badge{ padding:3px 8px; border-radius:999px; font-size:12px; background:#eee; }
+.ok{ color:var(--ok); }
+.ko{ color:var(--ko); }
+.result-line{ display:flex; justify-content:space-between; padding:6px 8px; background:#fafafa; border:1px solid #eee; border-radius:8px; margin-top:6px; }
+kbd{ background:#f0f0f0; padding:2px 6px; border-radius:6px; border:1px solid #e0e0e0; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+</style>
+</head>
+<body>
+
+<div class="banner">📚 TOPOGRAPHIE - MODULE 13 📚</div>
+
+<!-- PAGE 1: ACCUEIL -->
+<div id="page-accueil" class="section" style="display:block;">
+  <h1 id="presentation-title" style="text-align:center; color:var(--orange);">Préparation d'un ouvrage</h1>
+  <div style="text-align: center;">
+    <h2 style="color: var(--noir); margin-top: 0; font-size: 24px;">Ouvrage n°2</h2>
+    <input type="text" id="candidate" placeholder="Nom de l'élève" autocomplete="off" style="width: 100%; max-width: 400px; padding: 12px; font-size: 16px; margin: 16px 0;" />
+    <br>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <button id="startBtn" style="padding: 12px 32px; font-size: 16px;">Exercice d'application</button>
+      <button id="trainingBtn" style="padding: 12px 32px; font-size: 16px; background:#3b82f6;">🎯 Exercice d'entrainement</button>
+      <button id="evalBtn" style="padding: 12px 32px; font-size: 16px; background:#2f855a;">📊 Évaluation</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: PRÉSENTATION -->
+<div id="page-presentation" class="section" style="display:none;">
+  <h1 style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Application</h1>
+  <div class="qblock">
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+      <div class="figure">
+        <img id="ex1-img-top" src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20vue%20de%20dessus.png" alt="Vue de dessus de l'ouvrage">
+        <div class="legend">Vue de dessus</div>
+      </div>
+      <div class="figure">
+        <img id="ex1-img-coupe" src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20coupe.png" alt="Coupe de l'ouvrage">
+        <div class="legend">Coupe longitudinale</div>
+      </div>
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20relev%C3%A9.png" alt="Relevé altimétrique">
+        <div class="legend">Relevé altimétrique</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qblock" style="margin-top:16px;">
+    <p style="margin: 0 0 12px 0; line-height: 1.6;">
+      À l'aide du relevé altimétrique, de la vue de dessus et de la coupe de l'ouvrage à réaliser.<br><br>
+      <strong>On vous demande de :</strong><br><br>
+      <strong>1)</strong> Calculer les cotes manquantes n°1 et n°2 (m)<br><br>
+      <strong>2)</strong> À l'aide du tableau, calculer pour chaque point :<br>
+      • l'altitude du terrain naturel<br>
+      • l'altitude du projet<br>
+      • la cote de terrassement<br>
+      • la lecture sur mire sur le fond de forme<br><br>
+      <strong>3)</strong> Pente de l’ouvrage entre les points 1 et 2 (%)
+    </p>
+  </div>
+
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="backBtn" style="background:#6b7280;">← Retour</button>
+    <button id="continueBtn" style="background:var(--orange); padding:12px 32px; font-size:16px;">Commencer l'exercice →</button>
+  </div>
+</div>
+
+
+<!-- PAGE 2B: PRÉSENTATION ÉVALUATION -->
+<div id="page-eval-presentation" class="section" style="display:none;">
+  <h1 id="eval-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Évaluation</h1>
+  <div class="qblock">
+    <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20vue%20de%20dessus.png" alt="Vue de dessus de l'ouvrage">
+        <div class="legend">Vue de dessus</div>
+      </div>
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20coupe.png" alt="Coupe de l'ouvrage">
+        <div class="legend">Coupe longitudinale</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qblock" style="margin-top:16px; background:#fff3e0; border-left:6px solid var(--orange);">
+    <div class="qtitle" style="color:var(--orange);">📏 Valeur des distances</div>
+    <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+      <tr>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">A = <span style="color:var(--orange); font-size:16px;" id="eval-distA">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">B = <span style="color:var(--orange); font-size:16px;" id="eval-distB">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">C = <span style="color:var(--orange); font-size:16px;" id="eval-distC">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">D = <span style="color:var(--orange); font-size:16px;" id="eval-distD">-</span> m</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="qblock" style="margin-top:16px; background:#e8f5e9; border-left:6px solid #4caf50;">
+    <div class="qtitle" style="color:#4caf50;">⬇️ Profondeur de l'ouvrage par rapport au point de référence</div>
+    <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+      <tr>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P1 = <span style="color:#4caf50; font-size:16px;" id="eval-profP1">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P2 = <span style="color:#4caf50; font-size:16px;" id="eval-profP2">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P3 = <span style="color:#4caf50; font-size:16px;" id="eval-profP3">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P4 = <span style="color:#4caf50; font-size:16px;" id="eval-profP4">-</span> m</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="qblock" style="margin-top:16px; background:#f9f9f9; border-left:6px solid #2f855a;">
+    <div class="qtitle" style="color:#2f855a;">📊 Relevé altimétrique</div>
+    <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+      <tr style="background:#222; color:#fff;">
+        <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:20%; text-align:center;">Station 1</td>
+        <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:40%; text-align:center;">Référence = <span style="color:#4da6ff; font-size:16px;" id="eval-lectureRef">-</span></td>
+        <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:40%; text-align:center;">Altitude = <span style="color:#4da6ff; font-size:16px;" id="eval-altRef">-</span></td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 1 =</td>
+        <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="eval-lectP1">-</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 2 =</td>
+        <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="eval-lectP2">-</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 3 =</td>
+        <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="eval-lectP3">-</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 4 =</td>
+        <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="eval-lectP4">-</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="qblock" style="margin-top:16px;">
+    <p style="margin: 0 0 12px 0; line-height: 1.6;">
+      À l'aide du relevé altimétrique, de la vue de dessus et de la coupe de l'ouvrage à réaliser.<br><br>
+      <strong>Vous devez :</strong><br><br>
+      <strong>1)</strong> Calculer les cotes manquantes n°1 et n°2 (m)<br><br>
+      <strong>2)</strong> À l'aide du tableau, calculer pour chaque point :<br>
+      • l'altitude du terrain naturel<br>
+      • l'altitude du projet<br>
+      • la cote de terrassement<br>
+      • la lecture sur mire sur le fond de forme<br><br>
+      <strong>3)</strong> Pente de l'ouvrage entre les points 1 et 2 (%)
+    </p>
+  </div>
+
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="evalBackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="evalContinueBtn" style="background:#2f855a; padding:12px 32px; font-size:16px;">Commencer l'évaluation →</button>
+  </div>
+</div>
+
+<!-- PAGE 3A: EXERCICE 1 - APPLICATION -->
+<div id="exercise-1-app" class="section" style="display:none;">
+  <h1 style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Application - Exercice 1</h1>
+  <div class="qblock">
+    <div class="grid" style="align-items:start;">
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20vue%20de%20dessus.png" alt="Vue de dessus de l'ouvrage">
+        <div class="legend">Vue de dessus</div>
+      </div>
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20coupe.png" alt="Coupe de l'ouvrage">
+        <div class="legend">Coupe longitudinale</div>
+      </div>
+    </div>
+  </div>
+  <div class="qblock" style="text-align:center;">
+    <div class="qtitle" style="text-align:center;">1) Calculer les cotes manquantes <strong>n°1</strong> et <strong>n°2</strong> (m)</div>
+    <div class="row" style="justify-content:center; gap:8px;">
+      <label style="text-align:center;">cote n°1</label>
+      <input type="number" id="q1_d1" step="0.001" style="max-width:140px; text-align:center;" />
+      <label style="text-align:center;">cote n°2</label>
+      <input type="number" id="q1_d2" step="0.001" style="max-width:140px; text-align:center;" />
+    </div>
+  </div>
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="ex1AppBackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="ex1AppNextBtn" style="background:var(--orange);">Suivant →</button>
+  </div>
+</div>
+
+<!-- PAGE 3B: EXERCICE 1 - ENTRAINEMENT/EVALUATION -->
+<div id="exercise-1-random" class="section" style="display:none;">
+  <h1 id="ex1-random-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Exercice 1</h1>
+  <div class="qblock">
+    <div class="grid" style="align-items:start;">
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20vue%20de%20dessus.png" alt="Vue de dessus de l'ouvrage">
+        <div class="legend">Vue de dessus</div>
+      </div>
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20coupe.png" alt="Coupe de l'ouvrage">
+        <div class="legend">Coupe longitudinale</div>
+      </div>
+    </div>
+  </div>
+  <div class="qblock" style="margin-top:16px; background:#fff3e0; border-left:6px solid var(--orange);">
+    <div class="qtitle" style="color:var(--orange);">📏 Valeur des distances</div>
+    <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+      <tr>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">A = <span style="color:var(--orange); font-size:16px;" id="ex1-distA">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">B = <span style="color:var(--orange); font-size:16px;" id="ex1-distB">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">C = <span style="color:var(--orange); font-size:16px;" id="ex1-distC">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">D = <span style="color:var(--orange); font-size:16px;" id="ex1-distD">-</span> m</td>
+      </tr>
+    </table>
+  </div>
+  <div class="qblock" style="text-align:center;">
+    <div class="qtitle" style="text-align:center;">1) Calculer les cotes manquantes <strong>n°1</strong> et <strong>n°2</strong> (m)</div>
+    <div class="row" style="justify-content:center; gap:8px;">
+      <label style="text-align:center;">cote n°1</label>
+      <input type="number" id="q1_d1_random" step="0.001" style="max-width:140px; text-align:center;" />
+      <label style="text-align:center;">cote n°2</label>
+      <input type="number" id="q1_d2_random" step="0.001" style="max-width:140px; text-align:center;" />
+    </div>
+  </div>
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="ex1RandomBackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="ex1RandomNextBtn" style="background:var(--orange);">Suivant →</button>
+  </div>
+</div>
+
+<!-- PAGE 4: EXERCICE 2 -->
+<div id="exercise-2" class="section" style="display:none;">
+  <h1 id="ex2-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Application - Exercice 2</h1>
+  <div class="qblock">
+    <div class="figure">
+      <img id="ex2-img-releve" src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20relev%C3%A9.png" alt="Relevé altimétrique">
+      <div class="legend">Relevé altimétrique</div>
+    </div>
+  </div>
+  <div class="qblock">
+    <div class="qtitle">2) À l'aide du tableau, calculer pour chaque point :</div>
+    <ul style="margin:8px 0 0 18px;">
+      <li>l'altitude du terrain naturel</li>
+      <li>l'altitude du projet</li>
+      <li>la cote de terrassement</li>
+      <li>la lecture sur mire sur le fond de forme</li>
+    </ul>
+  </div>
+  <div class="qblock" style="margin-top:16px;">
+    <div class="qtitle">Tableau récapitulatif des réponses</div>
+    <div style="overflow-x: auto; margin-top:12px;">
+      <table id="response-table" style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="background-color:#222; color:#fff;">
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">Point</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Lecture arrière (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Lecture avant (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Dénivelé (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:16%;">Alt. TN (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Alt. Projet (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Cote terrassement (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:14%;">Lecture Ouvrage (mm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">Référence</td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:16%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:14%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">P1</td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:16%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:14%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P2</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P3</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P4</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="ex2BackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="ex2NextBtn" style="background:var(--orange);">Suivant →</button>
+  </div>
+</div>
+
+<!-- PAGE 4B: EXERCICE 2 - ENTRAINEMENT/EVALUATION -->
+<div id="exercise-2-random" class="section" style="display:none;">
+  <h1 id="ex2-random-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Exercice 2</h1>
+  <style>
+    /* Mise en page responsive pour l'exercice 2 (random) */
+    .ex2-grid { display:grid; grid-template-columns: 1fr 1fr; gap:20px; align-items:start; }
+    @media (max-width: 900px) { .ex2-grid { grid-template-columns: 1fr; } }
+    .ex2-grid .figure img { max-width:100%; height:auto; display:block; }
+    .ex2-grid .qblock { margin-top:0; }
+    .ex2-grid .qblock table { width:100%; }
+  </style>
+  <div class="qblock">
+    <div class="grid ex2-grid">
+      <div class="figure">
+        <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20coupe.png" alt="Coupe de l'ouvrage (évaluation)">
+        <div class="legend">Coupe longitudinale</div>
+      </div>
+      <div class="qblock" style="background:#f9f9f9; border-left:6px solid #2f855a;">
+        <div class="qtitle" style="color:#2f855a;">📊 Relevé altimétrique</div>
+        <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+          <tr style="background:#222; color:#fff;">
+            <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:20%; text-align:center;">Station 1</td>
+            <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:40%; text-align:center;">Référence = <span style="color:#4da6ff; font-size:16px;" id="ex2-altim-lectureRef">-</span></td>
+            <td style="padding:12px 16px; border:2px solid #222; font-weight:600; width:40%; text-align:center;">Altitude = <span style="color:#4da6ff; font-size:16px;" id="ex2-altim-altRef">-</span></td>
+          </tr>
+          <tr>
+            <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 1 =</td>
+            <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="ex2-altim-lectP1">-</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 2 =</td>
+            <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="ex2-altim-lectP2">-</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 3 =</td>
+            <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="ex2-altim-lectP3">-</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 16px; border:1px solid #ddd; text-align:center; font-weight:600;">Point 4 =</td>
+            <td colspan="2" style="padding:8px 16px; border:1px solid #ddd; text-align:center; color:#4da6ff; font-weight:600; font-size:16px;" id="ex2-altim-lectP4">-</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="qblock" style="margin-top:16px; background:#e8f5e9; border-left:6px solid #4caf50;">
+    <div class="qtitle" style="color:#4caf50;">⬇️ Profondeur de l'ouvrage par rapport au point de référence</div>
+    <table style="width:100%; border-collapse:collapse; font-size:15px; margin-top:12px;">
+      <tr>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P1 = <span style="color:#4caf50; font-size:16px;" id="ex2-profP1">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P2 = <span style="color:#4caf50; font-size:16px;" id="ex2-profP2">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P3 = <span style="color:#4caf50; font-size:16px;" id="ex2-profP3">-</span> m</td>
+        <td style="padding:10px 16px; border:1px solid #ddd; text-align:center; font-weight:600; width:25%;">P4 = <span style="color:#4caf50; font-size:16px;" id="ex2-profP4">-</span> m</td>
+      </tr>
+    </table>
+  </div>
+  <div class="qblock">
+    <div class="qtitle">2) À l'aide du tableau, calculer pour chaque point :</div>
+    <ul style="margin:8px 0 0 18px;">
+      <li>l'altitude du terrain naturel</li>
+      <li>l'altitude du projet</li>
+      <li>la cote de terrassement</li>
+      <li>la lecture sur mire sur le fond de forme</li>
+    </ul>
+  </div>
+  <div class="qblock" style="margin-top:16px;">
+    <div class="qtitle">Tableau récapitulatif des réponses</div>
+    <div style="overflow-x: auto; margin-top:12px;">
+      <table id="response-table-random" style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead>
+          <tr style="background-color:#222; color:#fff;">
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">Point</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Lecture arrière (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Lecture avant (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Dénivelé (mm)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:16%;">Alt. TN (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Alt. Projet (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:12%;">Cote terrassement (m)</th>
+            <th style="border:1px solid #ddd; padding:8px; text-align:center; width:14%;">Lecture Ouvrage (mm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">Référence</td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:16%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:14%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center; width:10%;">P1</td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:16%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:12%;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px; width:14%;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P2</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P3</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+          <tr>
+            <td style="border:1px solid #ddd; padding:8px; text-align:center;">P4</td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" step="0.001" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+            <td style="border:1px solid #ddd; padding:8px;"><input type="number" style="width:95%; padding:6px; border:1px solid #ccc; border-radius:4px;" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="ex2RandomBackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="ex2RandomNextBtn" style="background:var(--orange);">Suivant →</button>
+  </div>
+</div>
+
+<!-- PAGE 5: EXERCICE 3 -->
+<div id="exercise-3" class="section" style="display:none;">
+  <h1 id="ex3-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Application - Exercice 3</h1>
+  <div class="qblock">    <div class="figure">
+      <img id="ex3-img-coupe" src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20coupe.png" alt="Coupe de l'ouvrage">
+      <div class="legend">Coupe longitudinale</div>
+    </div>
+  </div>
+  <div class="qblock" style="text-align:center;">    <div class="qtitle" style="text-align:center;">3) Pente de l’ouvrage entre les points 1 et 2 (%)</div>
+    <div class="row" style="justify-content:center;">
+      <input type="number" id="q5_slope" step="0.01" style="max-width:200px; text-align:center;" />
+    </div>
+  </div>
+  <hr>
+  <div class="controls" style="justify-content:center;">
+    <button id="ex3BackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="checkBtn">Vérifier les réponses</button>
+  </div>
+  <div id="statusMessage" style="margin-top:12px; text-align:center;"></div>
+</div>
+
+<!-- PAGE 5B: EXERCICE 3 - ENTRAINEMENT/EVALUATION -->
+<div id="exercise-3-random" class="section" style="display:none;">
+  <h1 id="ex3-random-title" style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Exercice 3</h1>
+  <div class="qblock">    <div class="figure">
+      <img src="https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20coupe.png" alt="Coupe de l'ouvrage (évaluation)">
+      <div class="legend">Coupe longitudinale</div>
+    </div>
+  </div>
+  <div class="qblock" style="text-align:center;">    <div class="qtitle" style="text-align:center;">3) Pente de l’ouvrage entre les points 1 et 2 (%)</div>
+    <div class="row" style="justify-content:center;">
+      <input type="number" id="q5_slope_random" step="0.01" style="max-width:200px; text-align:center;" />
+    </div>
+  </div>
+  <hr>
+  <div class="controls" style="justify-content:center;">
+    <button id="ex3RandomBackBtn" style="background:#6b7280;">← Retour</button>
+    <button id="checkBtnRandom">Vérifier les réponses</button>
+  </div>
+  <div id="statusMessageRandom" style="margin-top:12px; text-align:center;"></div>
+</div>
+
+<!-- PAGE 6: RÉPONSES -->
+<div id="page-reponse" class="section" style="display:none;">
+  <h1 style="text-align:center; color:var(--orange);">Ouvrage n° 2 - Corrigé</h1>
+  <!-- Résumé de l'Évaluation -->
+  <div class="section" style="background:#fff; border-left:8px solid var(--orange); padding:24px; margin:16px 0;">
+    <h2 style="text-align:center; color:var(--noir); margin:0 0 24px 0; font-size:1.5em;">Résumé de l'Évaluation</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:800px; margin:0 auto;">
+      <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e0e0e0;">
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Date :</strong> <span id="score-date" style="color:var(--orange); font-weight:600;">-</span></p>
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Heure :</strong> <span id="score-time" style="color:var(--orange); font-weight:600;">-</span></p>
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Candidat :</strong> <span id="score-name" style="color:var(--orange); font-weight:600;">-</span></p>
+      </div>
+      <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e0e0e0;">
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Exercice 1 :</strong> <span id="score-ex1" style="color:var(--orange); font-weight:600;">-</span></p>
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Exercice 2 :</strong> <span id="score-ex2" style="color:var(--orange); font-weight:600;">-</span></p>
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Exercice 3 :</strong> <span id="score-ex3" style="color:var(--orange); font-weight:600;">-</span></p>
+        <p style="margin:8px 0; color:#666; font-size:0.95em;"><strong>Total :</strong> <span id="score-total" style="color:var(--orange); font-weight:600; font-size:1.1em;">-</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="corrige" style="margin-top:12px;">
+    <div class="qblock" style="border-left-color:#4a5568;">
+      <div class="qtitle">Tableau de correction</div>
+      <div id="corrigeContent"></div>
+      <p class="small">Ces valeurs proviennent de la configuration et des formules. Adaptez la configuration si nécessaire.</p>
+    </div>
+  </div>
+  <div class="controls" style="margin-top:16px; justify-content:center; gap:12px;">
+    <button id="corrigeBackBtn" style="background:#6b7280;">Nouvelle évaluation</button>
+    <button id="newTrainingBtn" style="background:#3b82f6; display:none;">🎯 Nouvel exercice d'entrainement</button>
+    <button id="downloadBtn" style="background:#2f855a;">Télécharger le résultat (CSV)</button>
+  </div>
+</div>
+
+<script>
+// ————— Configuration (valeurs fixes par défaut) —————
+const CONFIG_FIXED = {
+  // Autorisation par liste (désactivée par défaut pour éviter de bloquer)
+  REQUIRE_AUTH: true,
+  AUTHORIZED_CANDIDATES: {
+    "Professeur": ["MARINO","CHARDON","CHIOTTI","MATHIEU","MAUSSION"],
+    "1 cetpc": ["FONELLERAS","BONTEMPS","BRIATORE","BUCCIO","DIONISI","ERETEO","GARNERO","GRISONI","GUENEAU","HADANGUE","LACROIX","LEJEUNE","MAAZAOUI","MARTINEAU","MONELLO","PI-BUTHION","QUILICO","REMY","SANTIAGO","SCIARAFFA","THEVENET","TRUFFE","VILLEROY"],
+    "2 cetpc": ["ALBERT","AUDISIO","BABA","BERTOLOTTO","BOUCHEE","BOUFFART","BOURGUIGNON","BOUSQUET","CAPPADORO","COLPAERT","CULMINE","DOYEN","GAALOUL","GEORGE","GUEURUNURIAN","MONTEIRO","PAGE","PALAGONIA","PELLET","PONZO","PRUVOST","RICHARD","TETI"]
+  },
+
+  // Données "Relevé altimétrique" (valeurs de votre image)
+  altRef_m: 48.235,           // Altitude du repère (m)
+  lectureRef_mm: 1820,        // Lecture sur la mire au repère (mm)
+  lectures_mm: {              // Lectures terrain naturel (mm)
+    P1: 1850, P2: 1800, P3: 1790, P4: 1830
+  },
+
+  // Altitudes du projet (ouvrage fini) pour chaque point (m)
+  altProjet_m: { P1: 47.235, P2: 46.235, P3: 45.235, P4: 45.235 },
+
+  // Cotes plan manquantes (cote1 = 5 - 2 = 3 m, cote2 = 12 - 8 = 4 m)
+  cote1_m: 3.00,     // n°1 (5 - 2)
+  cote2_m: 4.00,     // n°2 (12 - 8)
+
+  // Distance horizontale entre les points 1 et 2 (pour la pente)
+  distance12_m: 4.00,
+
+  // Tolérances de correction
+  tol: {
+    m: 0.002,     // tolérance valeurs en mètres
+    mm: 2,        // tolérance lectures en millimètres
+    pct: 0.05     // tolérance pourcentages
+  }
+};
+
+// Jeux d'images utilisés selon le mode (fixe vs aléatoire)
+const IMAGE_SETS = {
+  fixed: {
+    vue: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20vue%20de%20dessus.png",
+    coupe: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20coupe.png",
+    releve: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2%20relev%C3%A9.png"
+  },
+  random: {
+    vue: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20vue%20de%20dessus.png",
+    coupe: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20coupe.png",
+    // Relevé spécifique pour l'aléatoire / évaluation
+    releve: "https://raw.githubusercontent.com/CETPC-Christophe/module-9-realisation-ouvrages/refs/heads/main/mo9ex2eval%20relev%C3%A9.png"
+  }
+};
+
+// CONFIG mutable pour passer d'exercice à évaluation
+let CONFIG = { ...CONFIG_FIXED };
+let isRandomMode = false; // Flag pour savoir si c'est un mode aléatoire (entrainement ou évaluation)
+let isEvaluation = false; // Flag pour savoir si c'est une évaluation (avec vérification Google Sheets)
+let completedEvaluations = new Set(); // Set des noms ayant terminé une évaluation
+const MODE = { APPLICATION:"application", TRAINING:"training", EVALUATION:"evaluation" };
+let currentMode = MODE.APPLICATION;
+
+// Fonction utilitaire d'arrondi
+function round3(x){ return Math.round(x*1000)/1000; }
+function round2(x){ return Math.round(x*100)/100; }
+
+// Fonction pour générer une configuration aléatoire
+function generateRandomConfig() {
+  // Altitude de référence entre 45 et 55 m
+  const altRef = 45 + Math.random() * 10;
+  
+  // Lecture de référence entre 1500 et 2000 mm
+  const lectureRef = 1500 + Math.floor(Math.random() * 500);
+  
+  // Lectures terrain naturel (variations de ±100mm)
+  const readings = {
+    P1: lectureRef + 30 + Math.floor(Math.random() * 40),
+    P2: lectureRef - 20 + Math.floor(Math.random() * 40),
+    P3: lectureRef - 30 + Math.floor(Math.random() * 40),
+    P4: lectureRef + 10 + Math.floor(Math.random() * 40)
+  };
+  
+  // Profondeurs de l'ouvrage par rapport au point de référence (incrément 0.10 m)
+  const profP1 = 0.50 + Math.floor(Math.random() * 6) * 0.10;  // 0.50 à 1.00 m
+  const profP2Increment = 0.50 + Math.floor(Math.random() * 6) * 0.10;  // 0.50 à 1.00 m
+  const profP2 = profP1 + profP2Increment;
+  const profP3Increment = 0.50 + Math.floor(Math.random() * 6) * 0.10;  // 0.50 à 1.00 m
+  const profP3 = profP2 + profP3Increment;
+  const profP4 = profP3;  // P4 = même profondeur que P3
+  
+  // Calcul des altitudes du projet à partir des profondeurs
+  const altProjet = {
+    P1: altRef - profP1,
+    P2: altRef - profP2,
+    P3: altRef - profP3,
+    P4: altRef - profP4
+  };
+  
+  // Distances pour les cotes (en mètres) - avec contraintes
+  const A = 10 + Math.floor(Math.random() * 11);  // 10-20 m (entier)
+  const maxB = Math.min(13, A - 1);
+  const B = 3 + Math.floor(Math.random() * (maxB - 3 + 1));  // 3-13 m mais < A
+  const maxC = Math.min(11, B - 1, A - 1);
+  const C = 1 + Math.floor(Math.random() * (maxC - 1 + 1));  // 1-11 m mais < A et < B
+  const minD = Math.max(6, B + 1, C + 1);
+  const maxD = Math.min(16, A - 5);  // Écart minimum de 4 m avec A (A - D >= 4, donc D <= A - 4)
+  const D = minD + Math.floor(Math.random() * (Math.max(0, maxD - minD + 1)));  // 6-16 m mais < A (avec écart >= 4) et > B et > C
+  
+  // Calcul des cotes à partir des distances
+  const c1 = B - C;
+  const c2 = A - D;
+  
+  // Distance entre P1 et P2 (entre 3 et 6 m)
+  const dist = 3 + Math.random() * 3;
+  
+  return {
+    ...CONFIG_FIXED,
+    altRef_m: round3(altRef),
+    lectureRef_mm: lectureRef,
+    lectures_mm: readings,
+    altProjet_m: {
+      P1: round3(altProjet.P1),
+      P2: round3(altProjet.P2),
+      P3: round3(altProjet.P3),
+      P4: round3(altProjet.P4)
+    },
+    // Distances
+    distance_A: round3(A),
+    distance_B: round3(B),
+    distance_C: round3(C),
+    distance_D: round3(D),
+    // Profondeurs
+    profondeur_P1: round2(profP1),
+    profondeur_P2: round2(profP2),
+    profondeur_P3: round2(profP3),
+    profondeur_P4: round2(profP4),
+    // Cotes calculées
+    cote1_m: round3(c1),
+    cote2_m: round3(c2),
+    distance12_m: round3(dist)
+  };
+}
+
+// ————— Calculs dérivés —————
+function toM(mm){ return mm/1000; }
+function toMM(m){ return Math.round(m*1000); }
+function within(x, y, tol){ return Math.abs(x-y) <= tol; }
+
+// Hauteur d’instrument
+function getHI(){ return CONFIG.altRef_m + toM(CONFIG.lectureRef_mm); }
+
+// Altitudes TN
+function getAltTN(){
+  const HI = getHI();
+  return {
+    P1: round3(HI - toM(CONFIG.lectures_mm.P1)),
+    P2: round3(HI - toM(CONFIG.lectures_mm.P2)),
+    P3: round3(HI - toM(CONFIG.lectures_mm.P3)),
+    P4: round3(HI - toM(CONFIG.lectures_mm.P4))
+  };
+}
+
+// Altitudes ouvrage fini (altitude du projet)
+function getAltOF(){
+  return {
+    P1: round3(CONFIG.altProjet_m.P1),
+    P2: round3(CONFIG.altProjet_m.P2),
+    P3: round3(CONFIG.altProjet_m.P3),
+    P4: round3(CONFIG.altProjet_m.P4)
+  };
+}
+
+// Cotes de terrassement (profondeur à creuser = Alt Projet - Alt TN)
+function getCoteTerrassement(){
+  const altTN = getAltTN();
+  const altOF = getAltOF();
+  return {
+    P1: round3(altOF.P1 - altTN.P1),
+    P2: round3(altOF.P2 - altTN.P2),
+    P3: round3(altOF.P3 - altTN.P3),
+    P4: round3(altOF.P4 - altTN.P4)
+  };
+}
+
+// Lectures sur mire pour ouvrage fini (en mm)
+function getLecturesOFmm(){
+  const HI = getHI();
+  const altOF = getAltOF();
+  // Lecture = HI - Alt
+  return {
+    P1: toMM(HI - altOF.P1),
+    P2: toMM(HI - altOF.P2),
+    P3: toMM(HI - altOF.P3),
+    P4: toMM(HI - altOF.P4)
+  };
+}
+
+// Pente entre 1 et 2 (%)
+function getSlope12Pct(){
+  const altOF = getAltOF();
+  const dz = altOF.P1 - altOF.P2; // descente de P1 vers P2
+  const pct = (dz / CONFIG.distance12_m) * 100;
+  return round2(pct);
+}
+
+// ————— UI & correction —————
+const DOM = {
+  // Pages principales
+  pageAccueil: document.getElementById("page-accueil"),
+  pagePresentation: document.getElementById("page-presentation"),
+  pageEvalPresentation: document.getElementById("page-eval-presentation"),
+  pageReponse: document.getElementById("page-reponse"),
+  
+  // Exercices Application
+  ex1App: document.getElementById("exercise-1-app"),
+  ex2App: document.getElementById("exercise-2"),
+  ex3App: document.getElementById("exercise-3"),
+  
+  // Exercices Random (Entrainement/Evaluation)
+  ex1Random: document.getElementById("exercise-1-random"),
+  ex1RandomTitle: document.getElementById("ex1-random-title"),
+  ex2RandomTitle: document.getElementById("ex2-random-title"),
+  ex2Random: document.getElementById("exercise-2-random"),
+  ex3RandomTitle: document.getElementById("ex3-random-title"),
+  ex3Random: document.getElementById("exercise-3-random"),
+  
+  // Boutons
+  startBtn: document.getElementById("startBtn"),
+  trainingBtn: document.getElementById("trainingBtn"),
+  evalBtn: document.getElementById("evalBtn"),
+  checkBtn: document.getElementById("checkBtn"),
+  downloadBtn: document.getElementById("downloadBtn"),
+  
+  // Boutons Ex1 App
+  ex1AppBackBtn: document.getElementById("ex1AppBackBtn"),
+  ex1AppNextBtn: document.getElementById("ex1AppNextBtn"),
+  
+  // Boutons Ex1 Random
+  ex1RandomBackBtn: document.getElementById("ex1RandomBackBtn"),
+  ex1RandomNextBtn: document.getElementById("ex1RandomNextBtn"),
+  ex2RandomBackBtn: document.getElementById("ex2RandomBackBtn"),
+  ex2RandomNextBtn: document.getElementById("ex2RandomNextBtn"),
+  ex3RandomBackBtn: document.getElementById("ex3RandomBackBtn"),
+  checkBtnRandom: document.getElementById("checkBtnRandom"),
+  
+  // Boutons Ex2 et Ex3
+  ex2BackBtn: document.getElementById("ex2BackBtn"),
+  ex2NextBtn: document.getElementById("ex2NextBtn"),
+  ex3BackBtn: document.getElementById("ex3BackBtn"),
+  
+  // Autres
+  candidate: document.getElementById("candidate"),
+  corrige: document.getElementById("corrige"),
+  corrigeContent: document.getElementById("corrigeContent"),
+  statusMessage: document.getElementById("statusMessage"),
+  statusMessageRandom: document.getElementById("statusMessageRandom"),
+  corrigeBackBtn: document.getElementById("corrigeBackBtn"),
+  newTrainingBtn: document.getElementById("newTrainingBtn"),
+  evalBackBtn: document.getElementById("evalBackBtn"),
+  evalContinueBtn: document.getElementById("evalContinueBtn")
+};
+function authorized(name){
+  if(!CONFIG.REQUIRE_AUTH) return true;
+  const N = name.trim().toUpperCase();
+  return Object.values(CONFIG.AUTHORIZED_CANDIDATES).some(list => list.includes(N));
+}
+
+function showCorrige(){
+  const altTN = getAltTN();
+  const altOF = getAltOF();
+  const coteTerr = getCoteTerrassement();
+  const lecOF = getLecturesOFmm();
+  const slope = getSlope12Pct();
+  const HI = getHI();
+  const ref = CONFIG.lectureRef_mm; // lecture arrière (référence)
+
+  DOM.corrigeContent.innerHTML = `
+    <table style="width:100%; border-collapse:collapse; text-align:center;">
+      <thead>
+        <tr style="background:#222; color:#fff;">
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">Point</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">Lecture arrière (mm)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">Lecture avant (mm)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">Dénivelé (mm)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">Alt TN (m)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">Alt Projet (m)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">Cote Terrassement (m)</th>
+          <th style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;">Lecture Ouvrage (mm)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">Référence</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;"></td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;"></td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">${CONFIG.altRef_m}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;"></td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;"></td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;"></td>
+        </tr>
+        <tr>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">P1</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${CONFIG.lectures_mm.P1}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref - CONFIG.lectures_mm.P1}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">${altTN.P1}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${altOF.P1}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${coteTerr.P1}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;">${lecOF.P1}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">P2</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${CONFIG.lectures_mm.P2}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref - CONFIG.lectures_mm.P2}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">${altTN.P2}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${altOF.P2}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${coteTerr.P2}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;">${lecOF.P2}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">P3</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${CONFIG.lectures_mm.P3}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref - CONFIG.lectures_mm.P3}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">${altTN.P3}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${altOF.P3}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${coteTerr.P3}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;">${lecOF.P3}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:10%;">P4</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${CONFIG.lectures_mm.P4}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${ref - CONFIG.lectures_mm.P4}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:16%;">${altTN.P4}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${altOF.P4}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:12%;">${coteTerr.P4}</td>
+          <td style="padding:6px; border:1px solid #ddd; text-align:center; width:14%;">${lecOF.P4}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="result-line"><span>Cote n°1</span><span>${round3(CONFIG.cote1_m)} m</span></div>
+    <div class="result-line"><span>Cote n°2</span><span>${round3(CONFIG.cote2_m)} m</span></div>
+    <div class="result-line"><span>Pente (1→2)</span><span>${slope} %</span></div>
+  `;
+}
+
+function updateEvaluationSummary() {
+  const name = DOM.candidate.value.trim() || "Anonyme";
+  
+  // Date et heure actuelles
+  const now = new Date();
+  const date = now.toLocaleDateString('fr-FR');
+  const time = now.toLocaleTimeString('fr-FR');
+  
+  // Mise à jour des éléments
+  document.getElementById('score-date').textContent = date;
+  document.getElementById('score-time').textContent = time;
+  document.getElementById('score-name').textContent = name;
+  
+  // Calcul des scores par exercice
+  let scoreEx1 = 0, totalEx1 = 2; // Q1 : 2 points (cote1 + cote2)
+  let scoreEx2 = 0, totalEx2 = 16; // Tableau : 4 colonnes × 4 points = 16
+  let scoreEx3 = 0, totalEx3 = 2; // Q5 : 2 points (pente)
+  
+  // Exercice 1 : Q1 (cotes)
+  const q1_d1 = readNumber("q1_d1");
+  const q1_d2 = readNumber("q1_d2");
+  if(q1_d1 !== null && within(q1_d1, CONFIG.cote1_m, CONFIG.tol.m)) scoreEx1++;
+  if(q1_d2 !== null && within(q1_d2, CONFIG.cote2_m, CONFIG.tol.m)) scoreEx1++;
+  
+  // Exercice 2 : Tableau (AltTN, AltProjet, CoteTerr, LectureOF pour P1-P4)
+  const altTN = getAltTN();
+  const altOF = getAltOF();
+  const coteTerr = getCoteTerrassement();
+  const lecOF = getLecturesOFmm();
+  const points = ["P1","P2","P3","P4"];
+  const table = document.getElementById("response-table");
+  if(table){
+    const rows = table.querySelectorAll("tbody tr");
+    points.forEach((p, idx) => {
+      const r = rows[idx+1];
+      if(!r) return;
+      const inputAltTN = readNumberFromCell(r.cells[4]);
+      const inputAltProj = readNumberFromCell(r.cells[5]);
+      const inputCoteTerr = readNumberFromCell(r.cells[6]);
+      const inputLecOF = readNumberFromCell(r.cells[7]);
+      if(inputAltTN !== null && within(inputAltTN, altTN[p], CONFIG.tol.m)) scoreEx2++;
+      if(inputAltProj !== null && within(inputAltProj, altOF[p], CONFIG.tol.m)) scoreEx2++;
+      if(inputCoteTerr !== null && within(inputCoteTerr, coteTerr[p], CONFIG.tol.m)) scoreEx2++;
+      if(inputLecOF !== null && within(inputLecOF, lecOF[p], CONFIG.tol.mm)) scoreEx2++;
+    });
+  }
+  
+  // Exercice 3 : Q5 (pente) - 2 points
+  const slope = getSlope12Pct();
+  const q5 = readNumber("q5_slope");
+  if(q5 !== null && within(q5, slope, CONFIG.tol.pct)) scoreEx3 += 2;
+  
+  // Calculs des pourcentages
+  const percentEx1 = ((scoreEx1 / totalEx1) * 100).toFixed(1);
+  const percentEx2 = ((scoreEx2 / totalEx2) * 100).toFixed(1);
+  const percentEx3 = ((scoreEx3 / totalEx3) * 100).toFixed(1);
+  const totalScore = scoreEx1 + scoreEx2 + scoreEx3;
+  const totalPoints = totalEx1 + totalEx2 + totalEx3;
+  const percentTotal = ((totalScore / totalPoints) * 100).toFixed(1);
+  
+  // Affichage
+  document.getElementById('score-ex1').textContent = `${scoreEx1}/${totalEx1} (${percentEx1}%)`;
+  document.getElementById('score-ex2').textContent = `${scoreEx2}/${totalEx2} (${percentEx2}%)`;
+  document.getElementById('score-ex3').textContent = `${scoreEx3}/${totalEx3} (${percentEx3}%)`;
+  document.getElementById('score-total').textContent = `${totalScore}/${totalPoints} (${percentTotal}%)`;
+}
+
+function readNumber(id){ 
+  const v = document.getElementById(id).value; 
+  return v === "" ? null : Number(v); 
+}
+
+function checkAnswers(){
+  let score = 0, total = 0;
+
+  // Q1
+  total += 2;
+  const q1_d1 = isRandomMode ? readNumber("q1_d1_random") : readNumber("q1_d1");
+  const q1_d2 = isRandomMode ? readNumber("q1_d2_random") : readNumber("q1_d2");
+  if(q1_d1 !== null && within(q1_d1, CONFIG.cote1_m, CONFIG.tol.m)) score++;
+  if(q1_d2 !== null && within(q1_d2, CONFIG.cote2_m, CONFIG.tol.m)) score++;
+
+  // Q2 combinée via tableau (AltTN, AltProjet, CoteTerr, LectureOF)
+  const altTN = getAltTN();
+  const altOF = getAltOF();
+  const coteTerr = getCoteTerrassement();
+  const lecOF = getLecturesOFmm();
+  const points = ["P1","P2","P3","P4"];
+  const responsesTable = {};
+  const tableId = isRandomMode ? "response-table-random" : "response-table";
+  const table = document.getElementById(tableId);
+  if(table){
+    const rows = table.querySelectorAll("tbody tr");
+    // rows: 0=Référence, 1=P1, 2=P2, 3=P3, 4=P4
+    points.forEach((p, idx) => {
+      const r = rows[idx+1];
+      if(!r) return;
+      const inputAltTN = readNumberFromCell(r.cells[4]);
+      const inputAltProj = readNumberFromCell(r.cells[5]);
+      const inputCoteTerr = readNumberFromCell(r.cells[6]);
+      const inputLecOF = readNumberFromCell(r.cells[7]);
+      responsesTable[p] = { altTN: inputAltTN, altProj: inputAltProj, coteTerr: inputCoteTerr, lecOF: inputLecOF };
+      // 4 champs par point
+      total += 4;
+      if(inputAltTN !== null && within(inputAltTN, altTN[p], CONFIG.tol.m)) score++;
+      if(inputAltProj !== null && within(inputAltProj, altOF[p], CONFIG.tol.m)) score++;
+      if(inputCoteTerr !== null && within(inputCoteTerr, coteTerr[p], CONFIG.tol.m)) score++;
+      if(inputLecOF !== null && within(inputLecOF, lecOF[p], CONFIG.tol.mm)) score++;
+    });
+  }
+
+  // Q5 pente
+  const slope = getSlope12Pct();
+  const q5 = isRandomMode ? readNumber("q5_slope_random") : readNumber("q5_slope");
+  total += 2;
+  if(q5 !== null && within(q5, slope, CONFIG.tol.pct)) score++; score++;
+
+  return {score, total, answers: {
+    q1: {d1:q1_d1, d2:q1_d2},
+    table: responsesTable,
+    q5: {slope: q5}
+  }};
+}
+function readNumberFromCell(cell){
+  if(!cell) return null;
+  const input = cell.querySelector('input');
+  if(!input) return null;
+  const v = input.value;
+  return v === "" ? null : Number(v);
+}
+
+function downloadCSV(candidate, result){
+  const altTN = getAltTN(), altOF = getAltOF(), coteTerr = getCoteTerrassement(), lecOF = getLecturesOFmm(), slope = getSlope12Pct();
+  const lines = [];
+  lines.push("Candidat;Date;Score;Total");
+  lines.push(`${candidate};${new Date().toLocaleString()};${result.score};${result.total}`);
+  lines.push("");
+  lines.push("HI (m);"+getHI().toFixed(3));
+  lines.push("Cote n°1 (m);"+CONFIG.cote1_m.toFixed(3)+";Réponse;"+(result.answers.q1.d1 ?? "")+";Cote n°2;"+(result.answers.q1.d2 ?? ""));
+  lines.push("");
+  lines.push("Alt TN P1 (m);"+altTN.P1.toFixed(3)+";Réponse;"+((result.answers.table?.P1?.altTN) ?? ""));
+  lines.push("Alt TN P2 (m);"+altTN.P2.toFixed(3)+";Réponse;"+((result.answers.table?.P2?.altTN) ?? ""));
+  lines.push("Alt TN P3 (m);"+altTN.P3.toFixed(3)+";Réponse;"+((result.answers.table?.P3?.altTN) ?? ""));
+  lines.push("Alt TN P4 (m);"+altTN.P4.toFixed(3)+";Réponse;"+((result.answers.table?.P4?.altTN) ?? ""));
+  lines.push("");
+  lines.push("Alt Projet P1 (m);"+altOF.P1.toFixed(3)+";Réponse;"+((result.answers.table?.P1?.altProj) ?? ""));
+  lines.push("Alt Projet P2 (m);"+altOF.P2.toFixed(3)+";Réponse;"+((result.answers.table?.P2?.altProj) ?? ""));
+  lines.push("Alt Projet P3 (m);"+altOF.P3.toFixed(3)+";Réponse;"+((result.answers.table?.P3?.altProj) ?? ""));
+  lines.push("Alt Projet P4 (m);"+altOF.P4.toFixed(3)+";Réponse;"+((result.answers.table?.P4?.altProj) ?? ""));
+  lines.push("");
+  lines.push("Cote Terrassement P1 (m);"+coteTerr.P1.toFixed(3)+";Réponse;"+((result.answers.table?.P1?.coteTerr) ?? ""));
+  lines.push("Cote Terrassement P2 (m);"+coteTerr.P2.toFixed(3)+";Réponse;"+((result.answers.table?.P2?.coteTerr) ?? ""));
+  lines.push("Cote Terrassement P3 (m);"+coteTerr.P3.toFixed(3)+";Réponse;"+((result.answers.table?.P3?.coteTerr) ?? ""));
+  lines.push("Cote Terrassement P4 (m);"+coteTerr.P4.toFixed(3)+";Réponse;"+((result.answers.table?.P4?.coteTerr) ?? ""));
+  lines.push("");
+  lines.push("Lecture OF P1 (mm);"+lecOF.P1+";Réponse;"+((result.answers.table?.P1?.lecOF) ?? ""));
+  lines.push("Lecture OF P2 (mm);"+lecOF.P2+";Réponse;"+((result.answers.table?.P2?.lecOF) ?? ""));
+  lines.push("Lecture OF P3 (mm);"+lecOF.P3+";Réponse;"+((result.answers.table?.P3?.lecOF) ?? ""));
+  lines.push("Lecture OF P4 (mm);"+lecOF.P4+";Réponse;"+((result.answers.table?.P4?.lecOF) ?? ""));
+  lines.push("");
+  lines.push("Pente 1→2 (%);"+slope.toFixed(2)+";Réponse;"+(result.answers.q5.slope ?? ""));
+
+  const blob = new Blob([lines.join("\n")],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `resultat_ouvrage2_${candidate.replaceAll(" ","_")}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ————— Envoi des résultats vers Google Sheets —————
+function sendDataToGoogleSheet(candidate, result, onSuccess) {
+  const now = new Date();
+  const timestamp = now.toLocaleString('fr-FR');
+  const percentage = ((result.score / result.total) * 100).toFixed(1);
+  
+  // Déterminer le type d'exercice
+  let exerciceType = 'Application';
+  if (isRandomMode && !isEvaluation) {
+    exerciceType = 'Entrainement';
+  } else if (isRandomMode && isEvaluation) {
+    exerciceType = 'Evaluation';
+  }
+  
+  // Calculer les scores par exercice
+  // Exercice 1: 2 points (cote1 + cote2)
+  let scoreEx1 = 0, totalEx1 = 2;
+  const q1_d1 = result.answers.q1.d1;
+  const q1_d2 = result.answers.q1.d2;
+  if(q1_d1 !== null && within(q1_d1, CONFIG.cote1_m, CONFIG.tol.m)) scoreEx1++;
+  if(q1_d2 !== null && within(q1_d2, CONFIG.cote2_m, CONFIG.tol.m)) scoreEx1++;
+  
+  // Exercice 2: 16 points (4 champs × 4 points)
+  let scoreEx2 = 0, totalEx2 = 16;
+  const altTN = getAltTN();
+  const altOF = getAltOF();
+  const coteTerr = getCoteTerrassement();
+  const lecOF = getLecturesOFmm();
+  const points = ["P1","P2","P3","P4"];
+  points.forEach(p => {
+    if (result.answers.table && result.answers.table[p]) {
+      if(result.answers.table[p].altTN !== null && within(result.answers.table[p].altTN, altTN[p], CONFIG.tol.m)) scoreEx2++;
+      if(result.answers.table[p].altProj !== null && within(result.answers.table[p].altProj, altOF[p], CONFIG.tol.m)) scoreEx2++;
+      if(result.answers.table[p].coteTerr !== null && within(result.answers.table[p].coteTerr, coteTerr[p], CONFIG.tol.m)) scoreEx2++;
+      if(result.answers.table[p].lecOF !== null && within(result.answers.table[p].lecOF, lecOF[p], CONFIG.tol.mm)) scoreEx2++;
+    }
+  });
+  
+  // Exercice 3: 1 point (pente)
+  let scoreEx3 = 0, totalEx3 = 1;
+  const slope = getSlope12Pct();
+  const q5 = result.answers.q5.slope;
+  if(q5 !== null && within(q5, slope, CONFIG.tol.pct)) scoreEx3++;
+  
+  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysslGKopMs5kqqBxRrOgZBEQ3fI4m8FzGIAbzojDaP3RMvIS3CucpDwq1PW3l4Re-N/exec';
+  
+  const params = new URLSearchParams();
+  params.append('timestamp', timestamp);
+  params.append('Nom', candidate || 'Non spécifié');
+  params.append('type_exercice', exerciceType);
+  params.append('score_ex1', `${scoreEx1}/${totalEx1}`);
+  params.append('score_ex2', `${scoreEx2}/${totalEx2}`);
+  params.append('score_ex3', `${scoreEx3}/${totalEx3}`);
+  params.append('score_total', `${result.score}/${result.total}`);
+  params.append('percentage', percentage);
+  
+  // Ajouter les réponses détaillées
+  params.append('cote1', result.answers.q1.d1 ?? '');
+  params.append('cote2', result.answers.q1.d2 ?? '');
+  
+  // Données du tableau pour chaque point (P1-P4)
+  ['P1', 'P2', 'P3', 'P4'].forEach(point => {
+    if (result.answers.table && result.answers.table[point]) {
+      params.append(`${point}_altTN`, result.answers.table[point].altTN ?? '');
+      params.append(`${point}_altProj`, result.answers.table[point].altProj ?? '');
+      params.append(`${point}_coteTerr`, result.answers.table[point].coteTerr ?? '');
+      params.append(`${point}_lecOF`, result.answers.table[point].lecOF ?? '');
+    }
+  });
+  
+  params.append('pente', result.answers.q5.slope ?? '');
+  
+  console.log('📤 Envoi des données vers Google Sheets...');
+  console.log('URL:', GOOGLE_APPS_SCRIPT_URL);
+  console.log('Paramètres:', Object.fromEntries(params));
+  
+  const queryUrl = GOOGLE_APPS_SCRIPT_URL + '?' + params.toString();
+  
+  // Si c'est une évaluation, vérifier d'abord côté serveur
+  if (isEvaluation) {
+    checkEvaluationOnServer(candidate, () => {
+      // Si la vérification passe, envoyer les données normalement
+      sendDataViaStandardFetch(queryUrl, onSuccess);
+    });
+  } else {
+    // Pour l'entrainement, envoyer directement
+    sendDataViaStandardFetch(queryUrl, onSuccess);
+  }
+}
+
+function checkEvaluationOnServer(candidate, onCheckSuccess) {
+  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysslGKopMs5kqqBxRrOgZBEQ3fI4m8FzGIAbzojDaP3RMvIS3CucpDwq1PW3l4Re-N/exec';
+  
+  const params = new URLSearchParams();
+  params.append('check_only', 'true');
+  params.append('type_exercice', 'Evaluation');
+  params.append('Nom', candidate || 'Non spécifié');
+  
+  const checkUrl = GOOGLE_APPS_SCRIPT_URL + '?' + params.toString();
+  
+  // Utiliser une requête CORS avec un timeout
+  const timeout = setTimeout(() => {
+    console.log('⏱️ Timeout de vérification, on procède quand même');
+    if (onCheckSuccess) onCheckSuccess();
+  }, 5000);
+  
+  fetch(checkUrl, { method: 'GET', mode: 'cors' })
+    .then(response => response.json())
+    .then(data => {
+      clearTimeout(timeout);
+      if (data.error === 'ALREADY_EVALUATED') {
+        alert('Vous avez déjà complété une évaluation. Vous ne pouvez en faire qu\'une seule.');
+        completedEvaluations.add(candidate.toUpperCase());
+        DOM.evalBtn.disabled = true;
+        return;
+      }
+      if (onCheckSuccess) onCheckSuccess();
+    })
+    .catch(error => {
+      clearTimeout(timeout);
+      console.log('⚠️ Impossible de vérifier côté serveur, on procède quand même:', error);
+      if (onCheckSuccess) onCheckSuccess();
+    });
+}
+
+function sendDataViaStandardFetch(queryUrl, onSuccess) {
+  fetch(queryUrl, { 
+    method: 'GET',
+    mode: 'no-cors'
+  })
+    .then(response => {
+      console.log('✅ Données envoyées avec succès');
+      if (onSuccess) onSuccess();
+    })
+    .catch(error => {
+      console.error('❌ Erreur lors de l\'envoi:', error);
+      console.log('🔄 Tentative d\'envoi alternative...');
+      sendDataViaImage(queryUrl);
+      // En cas d'erreur, on appelle quand même le callback après un délai (envoi via image)
+      setTimeout(() => {
+        if (onSuccess) onSuccess();
+      }, 2000);
+    });
+}
+
+function sendDataViaImage(queryUrl) {
+  const img = new Image();
+  img.src = queryUrl;
+  img.style.display = 'none';
+  document.body.appendChild(img);
+  console.log('📸 Tentative d\'envoi alternative via image tracker');
+  setTimeout(() => {
+    if (img.parentElement) {
+      document.body.removeChild(img);
+    }
+  }, 3000);
+}
+
+function showSuccessMessage(msg) {
+  // Créer un message de succès
+  const msgElement = document.createElement('div');
+  msgElement.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:#2e7d32; color:#fff; padding:12px 24px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.2); z-index:9999; font-weight:600;';
+  msgElement.textContent = msg;
+  document.body.appendChild(msgElement);
+  
+  setTimeout(() => {
+    if (msgElement.parentElement) {
+      msgElement.remove();
+    }
+  }, 4000);
+}
+
+// Vérifier si une évaluation a déjà été faite pour ce nom
+function verifyEvaluationOnServer(name, onComplete) {
+  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbysslGKopMs5kqqBxRrOgZBEQ3fI4m8FzGIAbzojDaP3RMvIS3CucpDwq1PW3l4Re-N/exec';
+  
+  const params = new URLSearchParams();
+  params.append('check_only', 'true');
+  params.append('type_exercice', 'Evaluation');
+  params.append('Nom', name);
+  params.append('callback', 'handleEvaluationCheck');
+  
+  const checkUrl = GOOGLE_APPS_SCRIPT_URL + '?' + params.toString();
+  
+  console.log('🔍 Vérification du nom:', name);
+  console.log('📡 URL:', checkUrl);
+  
+  // Créer une fonction globale pour recevoir la réponse JSONP
+  window.handleEvaluationCheck = function(data) {
+    console.log('📥 Réponse reçue:', data);
+    clearTimeout(timeout);
+    delete window.handleEvaluationCheck;
+    
+    if (data && data.error === 'ALREADY_EVALUATED') {
+      onComplete({ alreadyEvaluated: true });
+    } else {
+      onComplete({ alreadyEvaluated: false });
+    }
+  };
+  
+  // Timeout de 8 secondes
+  const timeout = setTimeout(() => {
+    console.log('⏱️ Timeout vérification - procéder');
+    delete window.handleEvaluationCheck;
+    onComplete({ alreadyEvaluated: false });
+  }, 8000);
+  
+  // Utiliser JSONP via un script tag
+  const script = document.createElement('script');
+  script.src = checkUrl;
+  script.onerror = () => {
+    console.log('❌ Erreur chargement script - procéder');
+    clearTimeout(timeout);
+    delete window.handleEvaluationCheck;
+    onComplete({ alreadyEvaluated: false });
+  };
+  document.head.appendChild(script);
+  
+  // Nettoyer après 10 secondes
+  setTimeout(() => {
+    if (script.parentNode) {
+      script.parentNode.removeChild(script);
+    }
+  }, 10000);
+}
+
+// Navigation
+DOM.startBtn.addEventListener("click", () => {
+  const name = DOM.candidate.value.trim();
+  if(name.length < 2){ alert("Veuillez saisir votre nom."); return; }
+  if(!authorized(name)){ alert("Accès refusé (nom non autorisé)."); return; }
+  // Utiliser CONFIG fixe et aller à la présentation
+  CONFIG = { ...CONFIG_FIXED };
+  isRandomMode = false;
+  isEvaluation = false;
+  document.getElementById("page-accueil").style.display = "none";
+  document.getElementById("page-presentation").style.display = "block";
+});
+
+DOM.trainingBtn.addEventListener("click", () => {
+  const name = DOM.candidate.value.trim();
+  if(name.length < 2){ alert("Veuillez saisir votre nom."); return; }
+  if(!authorized(name)){ alert("Accès refusé (nom non autorisé)."); return; }
+  // Générer une CONFIG aléatoire pour l'entrainement (sans vérification Google Sheets)
+  CONFIG = generateRandomConfig();
+  isRandomMode = true;
+  isEvaluation = false;
+  document.getElementById("page-accueil").style.display = "none";
+  DOM.pageEvalPresentation.style.display = "block";
+  // Changer le titre pour Entraînement
+  document.getElementById("eval-title").textContent = "Ouvrage n° 2 - Entraînement";
+  // Afficher les données dans la présentation
+  showEvalPresentation();
+});
+
+DOM.evalBtn.addEventListener("click", () => {
+  const name = DOM.candidate.value.trim();
+  if(name.length < 2){ alert("Veuillez saisir votre nom."); return; }
+  if(!authorized(name)){ alert("Accès refusé (nom non autorisé)."); return; }
+  
+  // Créer et afficher le message "Vérification en cours" sous le bouton
+  let statusDiv = document.getElementById('eval-status-message');
+  if (!statusDiv) {
+    statusDiv = document.createElement('div');
+    statusDiv.id = 'eval-status-message';
+    DOM.evalBtn.parentElement.insertBefore(statusDiv, DOM.evalBtn.nextSibling);
+  }
+  statusDiv.style.cssText = 'margin-top:12px; padding:12px; background:#e3f2fd; border-left:4px solid #1976d2; color:#1976d2; border-radius:4px; font-weight:600; text-align:center;';
+  statusDiv.textContent = '⏳ Vérification en cours...';
+  
+  verifyEvaluationOnServer(name, (result) => {
+    if (result.alreadyEvaluated) {
+      statusDiv.style.background = '#ffebee';
+      statusDiv.style.borderLeftColor = '#d32f2f';
+      statusDiv.style.color = '#d32f2f';
+      statusDiv.textContent = "❌ Vous avez déjà fait l'évaluation.";
+      completedEvaluations.add(name.toUpperCase());
+      DOM.evalBtn.disabled = true;
+      return;
+    }
+    statusDiv.remove();
+    CONFIG = generateRandomConfig();
+    isRandomMode = true;
+    isEvaluation = true;
+    document.getElementById("page-accueil").style.display = "none";
+    DOM.pageEvalPresentation.style.display = "block";
+    // Changer le titre pour Évaluation
+    document.getElementById("eval-title").textContent = "Ouvrage n° 2 - Évaluation";
+    showEvalPresentation();
+  });
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  // Retour à l'accueil
+  document.getElementById("page-accueil").style.display = "block";
+  document.getElementById("page-presentation").style.display = "none";
+  
+  // Réinitialiser complètement l'application
+  resetApplication();
+});
+
+document.getElementById("continueBtn").addEventListener("click", () => {
+  // Aller à l'exercice 1
+  document.getElementById("page-presentation").style.display = "none";
+    DOM.ex1App.style.display = "block";
+  DOM.candidate.disabled = true;
+  DOM.startBtn.disabled = true;
+});
+
+// Navigation Ex1 Application
+DOM.ex1AppBackBtn.addEventListener("click", () => {
+  DOM.ex1App.style.display = "none";
+  document.getElementById("page-presentation").style.display = "block";
+});
+DOM.ex1AppNextBtn.addEventListener("click", () => {
+  DOM.ex1App.style.display = "none";
+  DOM.ex2App.style.display = "block";
+});
+
+// Navigation Ex1 Random (Entrainement/Evaluation)
+DOM.ex1RandomBackBtn.addEventListener("click", () => {
+  DOM.ex1Random.style.display = "none";
+  document.getElementById("page-accueil").style.display = "block";
+  resetApplication();
+});
+DOM.ex1RandomNextBtn.addEventListener("click", () => {
+  DOM.ex1Random.style.display = "none";
+  DOM.ex2Random.style.display = "block";
+  if (DOM.ex2RandomTitle) {
+    DOM.ex2RandomTitle.textContent = isEvaluation ? "Ouvrage n° 2 - Exercice 2 - Évaluation" : "Ouvrage n° 2 - Exercice 2 - Entraînement";
+  }
+  // Met à jour les tableaux de l'exercice 2 (random)
+  showEx2RandomData();
+});
+
+// Navigation Ex2
+DOM.ex2BackBtn.addEventListener("click", () => {
+  DOM.ex2App.style.display = "none";
+  DOM.ex1App.style.display = "block";
+});
+DOM.ex2NextBtn.addEventListener("click", () => {
+  DOM.ex2App.style.display = "none";
+  DOM.ex3App.style.display = "block";
+});
+
+// Navigation Ex2 Random
+DOM.ex2RandomBackBtn.addEventListener("click", () => {
+  DOM.ex2Random.style.display = "none";
+  DOM.ex1Random.style.display = "block";
+});
+DOM.ex2RandomNextBtn.addEventListener("click", () => {
+  DOM.ex2Random.style.display = "none";
+  DOM.ex3Random.style.display = "block";
+  if (DOM.ex3RandomTitle) {
+    DOM.ex3RandomTitle.textContent = isEvaluation ? "Ouvrage n° 2 - Exercice 3 - Évaluation" : "Ouvrage n° 2 - Exercice 3 - Entraînement";
+  }
+});
+
+// Navigation Ex3
+DOM.ex3BackBtn.addEventListener("click", () => {
+  DOM.ex3App.style.display = "none";
+  DOM.ex2App.style.display = "block";
+});
+
+// Navigation Ex3 Random
+DOM.ex3RandomBackBtn.addEventListener("click", () => {
+  DOM.ex3Random.style.display = "none";
+  DOM.ex2Random.style.display = "block";
+  // Rafraîchir les données au retour sur Ex2
+  showEx2RandomData();
+});
+
+// Fonction pour effacer toutes les réponses
+function clearAllAnswers() {
+  // Effacer les champs de l'exercice 1 Application
+  const q1_d1 = document.getElementById("q1_d1");
+  const q1_d2 = document.getElementById("q1_d2");
+  if(q1_d1) q1_d1.value = "";
+  if(q1_d2) q1_d2.value = "";
+  
+  // Effacer les champs de l'exercice 1 Random
+  const q1_d1_random = document.getElementById("q1_d1_random");
+  const q1_d2_random = document.getElementById("q1_d2_random");
+  if(q1_d1_random) q1_d1_random.value = "";
+  if(q1_d2_random) q1_d2_random.value = "";
+  
+  // Effacer tous les champs du tableau de l'exercice 2
+  const table = document.getElementById("response-table");
+  if(table) {
+    const inputs = table.querySelectorAll("input");
+    inputs.forEach(input => {
+      input.value = "";
+    });
+  }
+  const tableRandom = document.getElementById("response-table-random");
+  if(tableRandom) {
+    const inputs = tableRandom.querySelectorAll("input");
+    inputs.forEach(input => { input.value = ""; });
+  }
+  
+  // Effacer le champ de l'exercice 3
+  const q5_slope = document.getElementById("q5_slope");
+  if(q5_slope) q5_slope.value = "";
+  const q5_slope_random = document.getElementById("q5_slope_random");
+  if(q5_slope_random) q5_slope_random.value = "";
+}
+
+// Fonction pour réinitialiser complètement l'application
+function resetApplication() {
+  // Vider le champ du nom
+  DOM.candidate.value = "";
+  
+  // Effacer toutes les réponses
+  clearAllAnswers();
+  
+  // Réinitialiser tous les flags
+  isRandomMode = false;
+  isEvaluation = false;
+  
+  // Réactiver tous les boutons
+  DOM.candidate.disabled = false;
+  DOM.startBtn.disabled = false;
+  DOM.trainingBtn.disabled = false;
+  DOM.evalBtn.disabled = false;
+  
+  // Réafficher le bouton Vérifier
+  DOM.checkBtn.style.display = "block";
+  if (DOM.checkBtnRandom) DOM.checkBtnRandom.style.display = "block";
+  
+  // Vider le message de statut
+  DOM.statusMessage.innerHTML = "";
+  if (DOM.statusMessageRandom) DOM.statusMessageRandom.innerHTML = "";
+  
+  // Supprimer le message de vérification d'évaluation s'il existe
+  const statusDiv = document.getElementById('eval-status-message');
+  if (statusDiv) {
+    statusDiv.remove();
+  }
+  
+  // Réinitialiser la configuration aux valeurs fixes
+  CONFIG = { ...CONFIG_FIXED };
+
+  // Masquer toutes les pages et revenir à l'accueil
+  if (DOM.pagePresentation) DOM.pagePresentation.style.display = "none";
+  if (DOM.pageEvalPresentation) DOM.pageEvalPresentation.style.display = "none";
+  if (DOM.pageReponse) DOM.pageReponse.style.display = "none";
+  if (DOM.ex1App) DOM.ex1App.style.display = "none";
+  if (DOM.ex1Random) DOM.ex1Random.style.display = "none";
+  if (DOM.ex2App) DOM.ex2App.style.display = "none";
+  if (DOM.ex3App) DOM.ex3App.style.display = "none";
+  if (DOM.pageAccueil) DOM.pageAccueil.style.display = "block";
+}
+
+// Navigation Corrigé -> Accueil (nouvelle évaluation)
+DOM.corrigeBackBtn.addEventListener("click", () => {
+  DOM.pageReponse.style.display = "none";
+  document.getElementById("page-accueil").style.display = "block";
+  
+  // Réinitialiser complètement l'application
+  resetApplication();
+  DOM.ex3BackBtn.style.display = "block"; // Réafficher le bouton Retour ex3
+  DOM.newTrainingBtn.style.display = "none"; // Masquer le bouton nouvel entrainement
+  clearAllAnswers(); // Effacer toutes les réponses
+  // Réinitialiser aux valeurs fixes
+  CONFIG = { ...CONFIG_FIXED };
+  isRandomMode = false;
+  isEvaluation = false;
+});
+
+// Handler pour le bouton Nouvel exercice d'entrainement
+DOM.newTrainingBtn.addEventListener("click", () => {
+  // Vider le nom (sécurité supplémentaire)
+  DOM.candidate.value = "";
+  
+  // Générer une nouvelle CONFIG aléatoire
+  CONFIG = generateRandomConfig();
+  isRandomMode = true;
+  isEvaluation = false;
+  
+  // Revenir à la présentation d'évaluation
+  DOM.pageReponse.style.display = "none";
+  DOM.pageEvalPresentation.style.display = "block";
+  
+  // Réactiver les boutons
+  DOM.checkBtn.style.display = "block";
+  DOM.ex3BackBtn.style.display = "block";
+  
+  // Effacer les réponses et afficher les nouvelles données
+  clearAllAnswers();
+  showEvalPresentation();
+});
+
+// Afficher la présentation d'évaluation avec les données
+function showEvalPresentation() {
+  document.getElementById("eval-altRef").textContent = CONFIG.altRef_m.toFixed(3);
+  document.getElementById("eval-lectureRef").textContent = CONFIG.lectureRef_mm;
+  document.getElementById("eval-lectP1").textContent = CONFIG.lectures_mm.P1;
+  document.getElementById("eval-lectP2").textContent = CONFIG.lectures_mm.P2;
+  document.getElementById("eval-lectP3").textContent = CONFIG.lectures_mm.P3;
+  document.getElementById("eval-lectP4").textContent = CONFIG.lectures_mm.P4;
+  // Afficher les distances A, B, C, D (entiers)
+  document.getElementById("eval-distA").textContent = CONFIG.distance_A.toFixed(0);
+  document.getElementById("eval-distB").textContent = CONFIG.distance_B.toFixed(0);
+  document.getElementById("eval-distC").textContent = CONFIG.distance_C.toFixed(0);
+  document.getElementById("eval-distD").textContent = CONFIG.distance_D.toFixed(0);
+  // Afficher les profondeurs (2 décimales)
+  document.getElementById("eval-profP1").textContent = CONFIG.profondeur_P1.toFixed(2);
+  document.getElementById("eval-profP2").textContent = CONFIG.profondeur_P2.toFixed(2);
+  document.getElementById("eval-profP3").textContent = CONFIG.profondeur_P3.toFixed(2);
+  document.getElementById("eval-profP4").textContent = CONFIG.profondeur_P4.toFixed(2);
+  document.getElementById("ex1-distA").textContent = CONFIG.distance_A.toFixed(0);
+  document.getElementById("ex1-distB").textContent = CONFIG.distance_B.toFixed(0);
+  document.getElementById("ex1-distC").textContent = CONFIG.distance_C.toFixed(0);
+  document.getElementById("ex1-distD").textContent = CONFIG.distance_D.toFixed(0);
+}
+
+// Afficher les données altimétriques et profondeurs sur Exercice 2 (Random)
+function showEx2RandomData() {
+  const altRef = CONFIG.altRef_m.toFixed(3);
+  const lectRef = CONFIG.lectureRef_mm;
+  const L = CONFIG.lectures_mm;
+  const P1 = CONFIG.profondeur_P1?.toFixed(2);
+  const P2 = CONFIG.profondeur_P2?.toFixed(2);
+  const P3 = CONFIG.profondeur_P3?.toFixed(2);
+  const P4 = CONFIG.profondeur_P4?.toFixed(2);
+
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+  setText("ex2-altim-altRef", altRef);
+  setText("ex2-altim-lectureRef", lectRef);
+  setText("ex2-altim-lectP1", L.P1);
+  setText("ex2-altim-lectP2", L.P2);
+  setText("ex2-altim-lectP3", L.P3);
+  setText("ex2-altim-lectP4", L.P4);
+
+  setText("ex2-profP1", P1);
+  setText("ex2-profP2", P2);
+  setText("ex2-profP3", P3);
+  setText("ex2-profP4", P4);
+}
+
+// Boutons de la présentation d'évaluation
+DOM.evalBackBtn.addEventListener("click", () => {
+  DOM.pageEvalPresentation.style.display = "none";
+  document.getElementById("page-accueil").style.display = "block";
+  
+  // Réinitialiser complètement l'application
+  resetApplication();
+});
+
+DOM.evalContinueBtn.addEventListener("click", () => {
+  DOM.pageEvalPresentation.style.display = "none";
+  DOM.ex1Random.style.display = "block";
+  // Mettre à jour le titre selon le mode
+  if (DOM.ex1RandomTitle) {
+    DOM.ex1RandomTitle.textContent = isEvaluation ? "Ouvrage n° 2 - Exercice 1 - Évaluation" : "Ouvrage n° 2 - Exercice 1 - Entraînement";
+  }
+  if (DOM.ex2RandomTitle) {
+    DOM.ex2RandomTitle.textContent = isEvaluation ? "Ouvrage n° 2 - Exercice 2 - Évaluation" : "Ouvrage n° 2 - Exercice 2 - Entraînement";
+  }
+  if (DOM.ex3RandomTitle) {
+    DOM.ex3RandomTitle.textContent = isEvaluation ? "Ouvrage n° 2 - Exercice 3 - Évaluation" : "Ouvrage n° 2 - Exercice 3 - Entraînement";
+  }
+  DOM.candidate.disabled = true;
+  DOM.startBtn.disabled = true;
+  DOM.trainingBtn.disabled = true;
+  DOM.evalBtn.disabled = true;
+  clearAllAnswers();
+});
+
+// (Corrigé ouvert via navigation désormais)
+
+DOM.checkBtn.addEventListener("click", () => {
+  const res = checkAnswers();
+  const name = DOM.candidate.value.trim() || "Anonyme";
+  
+  // Masquer le bouton Vérifier les réponses
+  DOM.checkBtn.style.display = "none";
+  
+  // Masquer le bouton Retour
+  DOM.ex3BackBtn.style.display = "none";
+  
+  // Si c'est un exercice d'entrainement, envoyer les données puis afficher la correction
+  if (isRandomMode && !isEvaluation) {
+    // Afficher le message de progression
+    DOM.statusMessage.innerHTML = '<p style="color:#1976d2; background:#e3f2fd; padding:12px; border-radius:8px; animation:pulse 1.5s infinite;">⏳ Envoi des réponses en cours...</p>';
+    
+    // Envoyer les données à Google Sheets
+    sendDataToGoogleSheet(name, res, () => {
+      // Après réussite de l'envoi, afficher le bouton Afficher la correction
+      DOM.statusMessage.innerHTML = '<button id="showCorrectionBtn" style="background:#2e7d32; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:15px; cursor:pointer; font-weight:600;">Afficher la correction</button>';
+      
+      document.getElementById("showCorrectionBtn").addEventListener("click", () => {
+        DOM.ex3App.style.display = "none";
+        DOM.pageReponse.style.display = "block";
+        showCorrige();
+        updateEvaluationSummary();
+        // Afficher le bouton "Nouvel exercice d'entrainement"
+        DOM.newTrainingBtn.style.display = "inline-block";
+        DOM.corrigeBackBtn.textContent = "Retour à l'accueil";
+        // Masquer le bouton après avoir cliqué
+        DOM.statusMessage.innerHTML = '';
+      });
+    });
+    return;
+  }
+  
+  // Si c'est une évaluation, faire la vérification Google Sheets
+  // Afficher le message de progression
+  DOM.statusMessage.innerHTML = '<p style="color:#1976d2; background:#e3f2fd; padding:12px; border-radius:8px; animation:pulse 1.5s infinite;">⏳ Vérifications des réponses en cours...</p>';
+  
+  // Envoyer les données à Google Sheets
+  sendDataToGoogleSheet(name, res, () => {
+    // Marquer cette évaluation comme terminée et désactiver le bouton
+    completedEvaluations.add(name.toUpperCase());
+    DOM.evalBtn.disabled = true;
+    
+    // Après réussite de l'envoi, afficher le bouton Afficher la correction
+    DOM.statusMessage.innerHTML = '<button id="showCorrectionBtn" style="background:#2e7d32; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:15px; cursor:pointer; font-weight:600;">Afficher la correction</button>';
+    
+    document.getElementById("showCorrectionBtn").addEventListener("click", () => {
+      DOM.ex3App.style.display = "none";
+      DOM.pageReponse.style.display = "block";
+      showCorrige();
+      updateEvaluationSummary();
+      // Masquer le bouton nouvel entrainement pour l'évaluation
+      DOM.newTrainingBtn.style.display = "none";
+      DOM.corrigeBackBtn.textContent = "Retour à l'accueil";
+      // Masquer le bouton après avoir cliqué
+      DOM.statusMessage.innerHTML = '';
+    });
+  });
+});
+
+// Handler pour le bouton Vérifier (random)
+DOM.checkBtnRandom.addEventListener("click", () => {
+  const res = checkAnswers();
+  const name = DOM.candidate.value.trim() || "Anonyme";
+
+  // Masquer le bouton Vérifier les réponses
+  DOM.checkBtnRandom.style.display = "none";
+
+  // Masquer le bouton Retour
+  if (DOM.ex3RandomBackBtn) DOM.ex3RandomBackBtn.style.display = "none";
+
+  // Si c'est un exercice d'entrainement, envoyer les données puis afficher la correction
+  if (isRandomMode && !isEvaluation) {
+    // Afficher le message de progression
+    DOM.statusMessageRandom.innerHTML = '<p style="color:#1976d2; background:#e3f2fd; padding:12px; border-radius:8px; animation:pulse 1.5s infinite;">⏳ Envoi des réponses en cours...</p>';
+
+    sendDataToGoogleSheet(name, res, () => {
+      DOM.statusMessageRandom.innerHTML = '<button id="showCorrectionBtnRandom" style="background:#2e7d32; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:15px; cursor:pointer; font-weight:600;">Afficher la correction</button>';
+
+      document.getElementById("showCorrectionBtnRandom").addEventListener("click", () => {
+        DOM.ex3Random.style.display = "none";
+        DOM.pageReponse.style.display = "block";
+        showCorrige();
+        updateEvaluationSummary();
+        DOM.newTrainingBtn.style.display = "inline-block";
+        DOM.corrigeBackBtn.textContent = "Retour à l'accueil";
+        DOM.statusMessageRandom.innerHTML = '';
+      });
+    });
+    return;
+  }
+
+  // Évaluation
+  DOM.statusMessageRandom.innerHTML = '<p style="color:#1976d2; background:#e3f2fd; padding:12px; border-radius:8px; animation:pulse 1.5s infinite;">⏳ Vérifications des réponses en cours...</p>';
+
+  sendDataToGoogleSheet(name, res, () => {
+    completedEvaluations.add(name.toUpperCase());
+    DOM.evalBtn.disabled = true;
+
+    DOM.statusMessageRandom.innerHTML = '<button id="showCorrectionBtnRandom" style="background:#2e7d32; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:15px; cursor:pointer; font-weight:600;">Afficher la correction</button>';
+
+    document.getElementById("showCorrectionBtnRandom").addEventListener("click", () => {
+      DOM.ex3Random.style.display = "none";
+      DOM.pageReponse.style.display = "block";
+      showCorrige();
+      updateEvaluationSummary();
+      DOM.newTrainingBtn.style.display = "none";
+      DOM.corrigeBackBtn.textContent = "Retour à l'accueil";
+      DOM.statusMessageRandom.innerHTML = '';
+    });
+  });
+});
+
+DOM.downloadBtn.addEventListener("click", () => {
+  const res = checkAnswers();
+  const name = DOM.candidate.value.trim() || "Anonyme";
+  downloadCSV(name, res);
+});
+
+// Enter key to jump next
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    const el = document.activeElement;
+    if(el && el.tagName === "INPUT"){ 
+      const inputs = Array.from(document.querySelectorAll("input"));
+      const idx = inputs.indexOf(el);
+      if(idx >= 0 && idx < inputs.length-1) inputs[idx+1].focus();
+    }
+  }
+});
+
+// Nettoyer toutes les données au chargement de la page
+window.addEventListener("load", () => {
+  // Vider le champ du nom
+  DOM.candidate.value = "";
+  
+  // Effacer toutes les réponses
+  clearAllAnswers();
+  
+  // Empêcher le navigateur de restaurer des valeurs
+  setTimeout(() => {
+    DOM.candidate.value = "";
+    clearAllAnswers();
+  }, 100);
+});
+</script>
+</body>
+</html>
